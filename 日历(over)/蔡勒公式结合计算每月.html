@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+	function yearType(year){
+		if(year%4==0&&year%100!=0||year%400==0){return true;}
+		return false;
+	}
+	function dayofMonth(year,month){
+		var montharr=[31,[28,29],31,30,31,30,31,31,30,31,30,31];
+		var type = yearType(year);
+		if(month==2&&type){
+			return montharr[1][1];
+		}else if (month==2){
+			return montharr[1][0];
+		}
+		return montharr[month-1];
+	}
+
+	function zellerweek(year,month,day){
+		//蔡勒公式
+		//m是月份
+		var m = month;
+		//d是日
+		var d = day;
+
+		if(month<=2){
+			//要做修正  12月相当于上一年13 14月
+			year--;
+			m=month+12;
+		}
+		var y = year%100;
+		//年后两位数  对100求余数
+		var c = parseInt(year/100);
+		//世纪  年份前两位数
+
+		w = (y + parseInt(y/4,10) +  parseInt(c/4,10)  - 2* c +  parseInt(13 * (m + 1) / 5,10) + d - 1) % 7;
+		//
+		if(w<0){
+			w+=7;//做修正
+		}
+		return w;
+	}
+		function PaintMonthCalendar(year,month){
+			var day = dayofMonth(year,month);
+			if(day<=0){return;}
+			var w = zellerweek(year,month,1);
+			console.log(w);
+			var i=1;
+			var value ='';
+			while(i<=day){
+				value+=i;
+				if(w==6){
+					// console.log('\n');
+					value+='\n';
+				}
+				i++;
+				w=(w+1)%7;
+			}
+			console.log(value);
+		}
+		// PaintMonthCalendar(2016,12);
+		// PaintMonthCalendar(2017,1);
+		// PaintMonthCalendar(2017,2);
+		for(var i = 1;i<=12;i++){
+			PaintMonthCalendar(2017,i);
+		}
+	</script>
+</body>
+</html>

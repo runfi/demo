@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	#main{
+		position: relative;
+		overflow: hidden;
+		width: 300px;
+		height: 500px;
+		float: left;
+	}
+	#main > img{
+		width: 300px;
+		height: 500px;
+		float: left;
+	}
+	#main > .mark{
+		position: absolute;
+		width: 50px;
+		height: 50px;
+		left: 0px;
+		top: 0px;
+		z-index: 10000;
+		background-color: red;
+	          filter: alpha(opacity=.5);
+	          opacity: .5;
+	}
+	div[class=bigshow]{
+		float: left;
+	          filter: alpha(opacity=0);
+	          opacity: 0;
+		position: relative;
+		z-index: -100;
+		background: url('big.jpg')  no-repeat;
+		width: 500px;
+		height: 500px;
+		background-position: 0% 0%;
+		transition:opacity .6s ease-in;
+	}
+
+
+	</style>
+</head>
+<body>
+	<div id="main">
+		<img src="big.jpg" alt="">	
+		<div class="mark">
+			
+		</div>
+	</div>
+	<div class="bigshow">
+	</div>
+	<script>
+
+		(function(){
+
+			function photoshow(option){
+				var kuai = option&&option._root||'main',
+					mark = option&&option._mark||'mark',
+					bigshow = option&&option._bigshow||'bigshow'
+				kuai = document.getElementById(kuai),
+				mark = document.getElementsByClassName(mark)[0],
+				bigshow = document.getElementsByClassName(bigshow)[0];
+			
+				function getPositionLeft(ele){
+							var actLeft = ele.offsetLeft;
+							var currentLeft = ele.offsetParent;
+							while(currentLeft!==null){
+								actLeft+=currentLeft.offsetLeft;
+								currentLeft = currentLeft.offsetParent;
+							}
+							return actLeft;
+						}
+				function getPositionTop(ele){
+							var actTop = ele.offsetTop;
+							var currentTop = ele.offsetParent;
+							while(currentTop!==null){
+								actTop +=currentTop.offsetTop;
+								currentTop = currentTop.offsetParent;
+							}
+							return actTop;
+				}
+				kuai.addEventListener('mousemove',function(event){
+					bigshow.style.opacity='1';
+					var pl,pt,MaxPointX,MaxPointY,pointX,pointY,blockX,blockY,km,kh
+					pl = getPositionLeft(kuai);
+					pt = getPositionTop(kuai);
+					MaxPointX = 300-25;
+					MaxPointY = 500-25;
+
+					pointX = event.clientX-pl;
+					pointY = event.clientY-pt;
+					// console.log(pointX,MaxPointX,pointY,MaxPointY);
+					if(pointX<25){
+						blockX = 0;
+					}else if(pointX>MaxPointX){
+						blockX = MaxPointX-25;
+					}else{
+						blockX = pointX-25;
+					}
+					if(pointY<25){
+						blockY = 0;
+					}else if(pointY>MaxPointY){
+						blockY = MaxPointY-25;
+					}else{
+						blockY = pointY-25;
+					}
+					kw = kuai.offsetWidth;
+					kh = kuai.offsetHeight;
+
+
+
+					bigshow.style.backgroundPosition = (pointX/kw).toFixed(2)*100+'% '+(pointY/kh).toFixed(2)*100+'%';
+
+					mark.style.left=blockX+'px';
+					mark.style.top=blockY+'px';
+				});
+				kuai.addEventListener('mouseout',function(){
+					bigshow.style.opacity='0';
+				})
+			}
+			photoshow({
+				_root:'main', //小图id
+				_mark:'mark', //进入小图后遮罩层类名
+				_bigshow:'bigshow' // 大图类名
+			});
+		})();
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name = "viewport" content = "width = device-width, initial-scale = 1.0, maximum-scale = 1.0, user-scalable = 0" />
+	<title>index</title>
+	<style>
+	body{
+		width: 100%;
+		height: 960px;
+	}
+	#main{
+		overflow: hidden;
+	}
+	#mainul{
+		overflow: hidden;
+		list-style: none;
+	}
+	.test{
+		width: 500px;
+		height: 60px;
+		background-color: red;
+	}
+	#mainul h1{
+		font-size: 32px;
+	}
+	p{
+		font-size: 32px;
+	}
+	</style>
+</head>
+<body>
+	<div id="main" class="chance asdasd">
+		<ul id="mainul">
+
+			<li class="test">1</li>
+			<li class="test">2</li>
+			<li class="test">3</li>
+			<li class="test">4</li>
+			<li class="test">5</li>
+			<li class="test">6</li>
+			<li class="test">7</li>
+			<li class="test">8</li>
+			<li class="test">9</li>
+			<li class="test">0</li>
+		</ul>
+		<h1 class="aaa">hahahahah</h1>
+	</div>
+	<p>尝试点击常按列表元素看console</p>
+	<p>tey to click the list-item and open console see what happen</p>
+	<p>尝试常按h1元素内容看console</p>
+	<p>try click h1 see the console.</p>
+	<script src="./index.js"></script>
+	<script>
+	window.onload=function(){
+
+		window.touch = touch=kangtouch(document.querySelector('#mainul'),false);
+		// touch=_touch(document.querySelectorAll('.test')[0]);
+
+		// init need two params 
+		// one dom Element
+		// two boolean  this boolean make you be choose stopPropagation
+		// init需要两个参数 一个是dom元素  一个是决定是否冒泡的布尔值
+		// init 初始化
+		// on 绑定事件类型,事件命名,回调函数,受代理类名
+		// remove 事件,命名
+		// 初始化的时候未绑定事件  实际绑定事件在on触发
+		touch.on('longtap','longtap',function(e){
+			//
+			console.log('longtap')
+			// e.event.stopPropagation();
+			//here doesn't work 
+			//beacusse mainul element and its children nodes don't have className `test`
+		},'asdasd').on('singletap','singletap',function(e){
+			console.log('singletap')
+			// e.event.stopPropagation();
+			//u can use callback and you will get a event
+		},'test').on('longtap','longtap2',function(e){
+			//no have proxy Class
+			// just emit event
+			console.log('longtap2')
+		}).on('doubletap','doubletap',function(e){
+			console.log('doubletap')
+		});
+		// here have four direction by your hand
+		// you can get the event object
+		touch.on('swipeleft','test',function(w){
+			console.log(w);
+			console.log('swiperleft')
+		}).on('swiperight','test',function(w){
+			console.log('swiperight')
+		}).on('swipeup','test',function(w){
+			console.log('swipeup')
+		}).on('swipedown','test',function(w){
+			console.log('swipedown')
+		}).on('swipingleft','test',function(w){
+			console.log('swipingleft')
+		}).on('swiping','test',function(w){
+			console.log(w)
+		})
+
+		// document.querySelector('#main').addEventListener('touchstart',function(e){
+		// 	console.log('123123')
+		// },false)
+		
+	}
+	</script>
+</body>
+</html>
